@@ -1,0 +1,66 @@
+<div class="container">
+  <h3>Book a table for two</h3><br>
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="book-name"
+        formControlName="name"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+        required
+      />
+      <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+        <div *ngIf="f.name.errors.required">Your name is required</div>
+      </div>
+    </div>
+    <!-- dropdown restaurants -->
+    <div class="form-group">
+      <label for="restaurants">Restaurant</label>
+      <select
+        class="form-control"
+        id="book-restaurants"
+        formControlName="restaurants"
+        [ngClass]="{ 'is-invalid': submitted && f.restaurants.errors }"
+        required
+      >
+        <option *ngFor="let rest of availableRestaurants" [value]="rest.name">{{
+          rest.name
+        }}</option>
+      </select>
+      <div *ngIf="submitted && f.restaurants.errors" class="invalid-feedback">
+        <div *ngIf="f.restaurants.errors.required">
+          Please choose a restaurant
+        </div>
+      </div>
+    </div>
+    <!-- dropdown interval orar -->
+    <div class="form-group">
+      <label for="intervals">Intervals</label>
+      <select
+        class="form-control"
+        id="book-interval"
+        formControlName="intervals"
+        [ngClass]="{ 'is-invalid': submitted && f.intervals.errors}"
+        required
+      >
+        <option *ngFor="let interv of availableIntervals" [value]="interv">{{interv}}</option>
+      </select>
+      <div *ngIf="submitted && f.intervals.errors" class="invalid-feedback">
+        <div *ngIf="f.intervals.errors.required">
+          Please choose an interval
+        </div>
+      </div>
+    </div>
+    <!-- submit -->
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-success">Book table</button>
+      <img
+        *ngIf="loading"
+        class="pl-3"
+        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+      />
+    </div>
+  </form>
+</div>
