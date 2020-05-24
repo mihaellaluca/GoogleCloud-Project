@@ -1,0 +1,15 @@
+.navbar {
+  background-color: rgba(238, 166, 34, 0.925) !important;
+  font-weight: bold;
+
+}
+ul {
+    text-align: center;
+    li:hover {
+        background-color: rgba(255, 255, 255, 0.13);
+    }
+}
+.navbar-toggler-icon {
+  border: 5px solid;
+  border-radius: 3px;
+}
