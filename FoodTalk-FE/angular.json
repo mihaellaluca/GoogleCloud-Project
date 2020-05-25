@@ -122,8 +122,13 @@
               "devServerTarget": "FoodTalk-FE:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "FoodTalk-FE"
 }

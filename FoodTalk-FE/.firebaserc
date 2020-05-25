@@ -1,0 +1,15 @@
+{
+  "targets": {
+    "astral-bit-278316": {
+      "hosting": {
+        "FoodTalk-FE": [
+          "astral-bit-278316"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "foodtalkfe": "astral-bit-278316",
+    "default": "astral-bit-278316"
+  }
+}
