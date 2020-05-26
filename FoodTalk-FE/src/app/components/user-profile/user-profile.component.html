@@ -1,22 +1,36 @@
 <div class="container">
-<form>
+  <li>
+
+  </li>
+  <ul>
+    <li *ngFor="let food of userProfile.prefFood">
+      {{food}}
+    </li>
+  </ul>
+<form (ngSubmit)="onSubmit()">
+
   <h4>Favorite Restaurants</h4>
   <div *ngFor="let restaurant of restaurants">
-    <input type="checkbox" id="{{restaurant}}" name="{{restaurant}}">
+    <input type="checkbox" id="{{restaurant}}" name="{{restaurant}}" >
     <label for="{{restaurant}}">{{restaurant}}</label>
   </div>
 
+<h4>Favorite Cuisines</h4>
   <h4></h4>
-  <div *ngFor="let country of countries">
-    <input type="checkbox" id="{{country}}" name="{{country}}">
-    <label for="{{country}}">{{country}}</label>
+  <div *ngFor="let cuisine of cuisines">
+    <input type="checkbox" id="{{cuisine}}" name="{{cuisine}}">
+    <label for="{{cuisine}}">{{cuisine}}</label>
   </div>
 
   <h4>Food preferences</h4>
   <div *ngFor="let  foodType of food">
-    <input type="checkbox" id="{{foodType}}" name="{{foodType}}">
+    <input type="checkbox" id="{{foodType}}" name="{{foodType}}" ng-click="addFood(restaurant)">
     <label for="{{foodType}}">{{foodType}}</label>
 
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-success">Modify</button>
   </div>
 </form>
 </div>

@@ -1,3 +1,6 @@
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from './../../services/auth/auth.service';
+import { UserProfileService } from './../../services/user-profile/user-profile.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,12 +11,25 @@ import { Component, OnInit } from '@angular/core';
 export class UserProfileComponent implements OnInit {
   restaurants = ['Mamamia', 'Dionisios', 'Hellow'];
   food = ['pizza', 'burger', 'salad'];
-  countries = ['Italy', 'Germany'];
+  cuisines = ['Italy', 'Germany'];
+  chosenRestaurants = [];
+  chosenFood = [];
+  chosenCuisines = [];
+  userProfile;
 
-
-  constructor() { }
+  constructor(private authService: AuthService, private httpClient: HttpClient) {
+    authService.user$.pipe().subscribe((data)=>
+    this.userProfile = httpClient.get("https://us-central1-astral-bit-278316.cloudfunctions.net/getUserbyEmail/"+data["email"])
+    );
+  }
 
   ngOnInit(): void {
+  }
+  onSubmit(){
+
+  }
+  addFood(chekedFood: string){
+    this.chosenFood.push(chekedFood);
   }
 
 }

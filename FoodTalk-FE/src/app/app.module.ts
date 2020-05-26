@@ -11,6 +11,7 @@ import { BookingComponent } from './components/booking/booking.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapComponent } from './components/map/map.component';
 
+
 import { AuthService } from './services/auth/auth.service'
 // ...omitted
 import { AngularFireModule } from '@angular/fire';
