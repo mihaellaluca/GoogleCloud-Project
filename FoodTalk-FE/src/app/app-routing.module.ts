@@ -5,15 +5,21 @@ import { Routes, RouterModule } from '@angular/router';
 import { BookingComponent } from './components/booking/booking.component';
 import { MapComponent } from './components/map/map.component';
 
+import { HomeComponent } from './components/home/home.component';
 
 
 const routes: Routes = [
+<<<<<<< HEAD
 	{ path: 'booking-component', component: BookingComponent,canActivate: [AuthGuard] },
   { path: 'map-component', component: MapComponent,canActivate: [AuthGuard] },
   {path: 'user-profile-component', component: UserProfileComponent, canActivate: [AuthGuard]}
 
+=======
+	{ path: 'booking-component', component: BookingComponent, canActivate: [ AuthGuard ] },
+	{ path: 'map-component', component: MapComponent, canActivate: [ AuthGuard ] },
+	{ path: 'home-component', component: HomeComponent, canActivate: [ AuthGuard ] }
+>>>>>>> master
 ];
-
 
 @NgModule({
 	imports: [ RouterModule.forRoot(routes) ],
