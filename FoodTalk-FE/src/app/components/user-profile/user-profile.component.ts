@@ -18,12 +18,23 @@ export class UserProfileComponent implements OnInit {
   userProfile;
 
   constructor(private authService: AuthService, private httpClient: HttpClient) {
-    authService.user$.pipe().subscribe((data)=>
-    this.userProfile = httpClient.get("https://us-central1-astral-bit-278316.cloudfunctions.net/getUserbyEmail/"+data["email"])
-    );
+
+    // authService.user$.pipe().subscribe((data)=>{
+
+    // httpClient.get("https://us-central1-astral-bit-278316.cloudfunctions.net/getUserbyEmail/"+data["email"])
+    //                               .pipe()
+    //                               .subscribe((data)=> {
+    //                                 console.log(data);
+    //                                 this.favoriteFoods = data['prefFood']});
+
+    //    }
+    // );
+
   }
 
   ngOnInit(): void {
+
+
   }
   onSubmit(){
 
