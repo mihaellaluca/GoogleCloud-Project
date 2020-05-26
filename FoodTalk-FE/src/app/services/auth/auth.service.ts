@@ -7,7 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, first} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,8 @@ export class AuthService {
         private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
         private router: Router
+       
+
     ) {
       this.user$ = this.afAuth.authState.pipe(
         switchMap(user => {
@@ -34,6 +36,8 @@ export class AuthService {
       )
     }
 
+    
+
     async googleSignin() {
       const provider = new auth.GoogleAuthProvider();
       const credential = await this.afAuth.auth.signInWithPopup(provider);
@@ -44,15 +48,25 @@ export class AuthService {
       // Sets user data to firestore on login
       const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
 
-      const data = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL
-      }
+      
+      var center: google.maps.LatLngLiteral;
+      navigator.geolocation.getCurrentPosition((position) => {
+        center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var data = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          center: center
+        }
+        return userRef.set(data, { merge: true })
+      });
+      
 
-      return userRef.set(data, { merge: true })
-
+    
     }
 
     async signOut() {
