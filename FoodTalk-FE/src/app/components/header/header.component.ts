@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { AuthService } from '../../services/auth/auth.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -10,10 +10,10 @@ export class HeaderComponent implements OnInit {
   logo = "Logo";
   navbarOpen = false;
 
-  constructor() { }
+  constructor(public auth: AuthService) { }
 
   ngOnInit() {
-    
+
   }
 
   toggleNavbar() {
