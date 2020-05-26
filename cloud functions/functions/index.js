@@ -11,20 +11,8 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//     response.send("Hello from Firebase!");
-// });
-
-// exports.addMessage = functions.https.onRequest(async (req, res) => {
-//     const original = req.query.text;
-//     // Push the new message into Cloud Firestore using the Firebase Admin SDK.
-//     const writeResult = await db.collection("users").add({ name: "Karenina" });
-//     res.json({
-//         result: `Userfirebase emulators:s with ID: ${writeResult.id} added.`,
-//     });
-// });
-
 exports.getRestaurants = functions.https.onRequest(async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const original = req.query.text;
     const restaurants = await db
         .collection("restaurants")
@@ -49,4 +37,83 @@ exports.getRestaurants = functions.https.onRequest(async (req, res) => {
         .catch((err) => {
             console.log("Error getting documents", err);
         });
+});
+
+exports.getUserbyId = functions.https.onRequest(async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const userId = req.params[0].split("/")[1];
+    console.log("userId:", userId);
+    const users = await db
+        .collection("users")
+        .where("uid", "==", userId)
+        .get()
+        .then((snapshot) => {
+            if (snapshot.empty) {
+                console.log("No matching documents.");
+                return;
+            }
+            var user = {};
+            snapshot.forEach((doc) => {
+                console.log(doc.id, "=>", doc.data());
+                user[doc.id] = doc.data();
+            });
+
+            res.json(user);
+            res.end();
+            return;
+        })
+        .catch((err) => {
+            console.log("Error getting documents", err);
+        });
+});
+
+exports.modifyProfile = functions.https.onRequest(async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const userId = req.params[0].split("/")[1];
+    const request = req.body;
+    var prefRestaurant = request.prefRestaurant;
+    var prefSpecific = request.prefSpecific;
+    var prefFood = request.prefFood;
+    const users = await db
+        .collection("users")
+        .where("uid", "==", userId)
+        .get()
+        .then((snapshot) => {
+            var user = snapshot.docs[0];
+            if (prefRestaurant.length) {
+                user.ref.update({ prefRestaurants: prefRestaurant });
+            }
+            if (prefSpecific.length) {
+                user.ref.update({ prefSpecific: prefSpecific });
+            }
+            if (prefFood.length) {
+                user.ref.update({ prefFood: prefFood });
+            }
+            res.json("ok");
+            res.end();
+            return;
+        })
+        .catch((err) => {
+            console.log("Error getting documents", err);
+        });
+});
+
+exports.sendMailToRestaurant = functions.https.onRequest(async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const request = req.body;
+    var message = {
+        html: `Hello, partner! \n A reservation has been made from ${request.name} at your restaurant in the interval ${request.interval}. \n Our clients can't wait to be there! \n FoodTalk TEAM `,
+        subject: `FoodTalk Reservation`,
+        text: ``,
+    };
+    var to = request.email;
+    var data = {
+        message: message,
+        to: to,
+    };
+    const mail = await db.collection("mail").add(data);
+
+    res.json("ok");
+    res.end();
+    return;
 });
