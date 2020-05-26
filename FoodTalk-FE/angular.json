@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "FoodTalk-FE"
+  "defaultProject": "FoodTalk-FE",
+  "cli": {
+    "analytics": false
+  }
 }

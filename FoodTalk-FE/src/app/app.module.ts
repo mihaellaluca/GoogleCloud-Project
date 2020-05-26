@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+import { GoogleMapsModule } from '@angular/google-maps';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BookingComponent } from './components/booking/booking.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MapComponent } from './components/map/map.component';
 
 import { AuthService } from './services/auth/auth.service'
 // ...omitted
@@ -28,10 +30,12 @@ const config = {apiKey: "AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw",
 
 
 @NgModule({
+
   declarations: [
     AppComponent,
     HeaderComponent,
-    BookingComponent
+    BookingComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -40,9 +44,11 @@ const config = {apiKey: "AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw",
     ReactiveFormsModule,
     AngularFireModule.initializeApp(config),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    GoogleMapsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
+
 })
-export class AppModule { }
+export class AppModule {}
