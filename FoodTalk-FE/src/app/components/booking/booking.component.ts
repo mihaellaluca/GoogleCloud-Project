@@ -75,22 +75,17 @@ export class BookingComponent implements OnInit {
       email: array
     };
    
-    console.log("BODY", body);
     let response = this.mailService
       .sendMailToRestaurant(body)
       .pipe()
       .subscribe((data) => console.log(data));
   
-    console.log("Succesfully booked a table!");
+    window.alert("Succesfully booked a table!");
   }
 
   searchRestaurantEmail(availableRestaurants, restName) {
-    console.log("avail rest", availableRestaurants);
-    console.log(restName);
     for (let i = 0; i < availableRestaurants.length; i++) {
-      console.log(availableRestaurants[i]);
       if (availableRestaurants[i].Name === restName) {
-        console.log("Am gasit asta:",availableRestaurants[i].email);
         return availableRestaurants[i].email;
       }
     }
