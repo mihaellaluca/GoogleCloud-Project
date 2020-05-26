@@ -98,6 +98,8 @@ exports.modifyProfile = functions.https.onRequest(async (req, res) => {
         });
 });
 
+
+
 exports.sendMailToRestaurant = functions.https.onRequest(async (req, res) => {
     res.set("Access-Control-Allow-Origin", "*");
     const request = JSON.parse(req.body);
