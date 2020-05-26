@@ -22,7 +22,7 @@
         <a class="nav-link" routerLink="booking-component" routerLinkActive="active">Book a table</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="" routerLinkActive="active">Chat</a>
+        <a class="nav-link" routerLink="chat-component" routerLinkActive="active">Chat</a>
       </li>
       <li *ngIf="auth.user$ | async; then authenticated else guest">
         <!-- template will replace this div -->

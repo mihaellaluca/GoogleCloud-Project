@@ -7,11 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import { Observable, of } from 'rxjs';
-<<<<<<< HEAD
-import { switchMap, first} from 'rxjs/operators';
-=======
 import { switchMap, first, map } from 'rxjs/operators';
->>>>>>> Chat
 
 @Injectable({
   providedIn: 'root'
@@ -40,13 +36,9 @@ export class AuthService {
       )
     }
 
-<<<<<<< HEAD
-    
-=======
     getUser() {
       return this.user$.pipe(first()).toPromise();
     }
->>>>>>> Chat
 
     async googleSignin() {
       const provider = new auth.GoogleAuthProvider();
