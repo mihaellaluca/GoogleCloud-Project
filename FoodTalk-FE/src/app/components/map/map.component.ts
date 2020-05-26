@@ -35,7 +35,10 @@ export class MapComponent implements OnInit {
 		minZoom: 8
 	};
 	markers = [];
-	infoContent = '';
+	InfoContent = {
+		Meniu: '',
+		ImgUrl: ''
+	};
 
 	ngOnInit() {
 		this.restaurantService.getRestaurants().pipe().subscribe((data) => {
@@ -55,8 +58,13 @@ export class MapComponent implements OnInit {
 						text: element.Name
 					},
 					title: element.Name,
-					info: `<img src=${element.ImgUrl} width="400" height="400">
-					<p>Meniu:${specialitati}</p>`
+					// info:
+					//  `<img src=${element.ImgUrl} width="400" height="400">
+					// <p>Meniu:${specialitati}</p>`
+					info: {
+						ImgUrl: element.ImgUrl,
+						Meniu: specialitati
+					}
 				});
 			});
 		});
@@ -69,26 +77,9 @@ export class MapComponent implements OnInit {
 		});
 	}
 
-	addMarker() {
-		this.markers.push({
-			position: {
-				lat: this.center.lat + (Math.random() - 0.5) * 2 / 10,
-				lng: this.center.lng + (Math.random() - 0.5) * 2 / 10
-			},
-			label: {
-				color: 'red',
-				text: 'Marker label ' + (this.markers.length + 1)
-			},
-			title: 'Marker title ' + (this.markers.length + 1),
-			info: 'Marker info ' + (this.markers.length + 1),
-			options: {
-				animation: google.maps.Animation.BOUNCE
-			}
-		});
-	}
-
 	openInfo(marker: MapMarker, content) {
-		this.infoContent = content;
+		console.log(content);
+		this.InfoContent = content;
 		this.info.open(marker);
 	}
 }

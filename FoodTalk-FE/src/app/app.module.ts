@@ -15,6 +15,8 @@ import { AuthService } from './services/auth/auth.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { SuggetionsTabComponent } from './components/suggetions-tab/suggetions-tab.component';
+import { HomeComponent } from './components/home/home.component';
 
 const config = {
 	apiKey: 'AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw',
@@ -28,7 +30,7 @@ const config = {
 };
 
 @NgModule({
-	declarations: [ AppComponent, HeaderComponent, BookingComponent, MapComponent ],
+	declarations: [ AppComponent, HeaderComponent, BookingComponent, MapComponent, SuggetionsTabComponent, HomeComponent ],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
