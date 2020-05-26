@@ -8,17 +8,29 @@ import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 })
 export class MapComponent implements OnInit {
 	constructor() {}
-	@ViewChild(GoogleMap, { static: false })
-	map: GoogleMap;
-	@ViewChild(MapInfoWindow, { static: false })
-	info: MapInfoWindow;
+	@ViewChild(GoogleMap) map: GoogleMap;
+	@ViewChild(MapInfoWindow) info: MapInfoWindow;
+	myStyles = [
+		{
+			featureType: 'poi',
+			elementType: 'labels',
+			stylers: [ { visibility: 'off' } ]
+		}
+	];
 	zoom = 12;
 	center: google.maps.LatLngLiteral;
 	options: google.maps.MapOptions = {
 		zoomControl: false,
 		scrollwheel: false,
 		disableDoubleClickZoom: true,
-		mapTypeId: 'hybrid',
+		mapTypeId: 'roadmap',
+		styles: [
+			{
+				featureType: 'poi',
+				elementType: 'labels',
+				stylers: [ { visibility: 'off' } ]
+			}
+		],
 		maxZoom: 15,
 		minZoom: 8
 	};
