@@ -16,6 +16,7 @@ import { AuthService } from './services/auth/auth.service'
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const config = {apiKey: "AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw",
   authDomain: "astral-bit-278316.firebaseapp.com",
@@ -35,7 +36,8 @@ const config = {apiKey: "AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw",
     AppComponent,
     HeaderComponent,
     BookingComponent,
-    MapComponent
+    MapComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
