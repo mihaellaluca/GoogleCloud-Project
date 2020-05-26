@@ -10,7 +10,7 @@ admin.initializeApp({
     databaseURL: "https://astral-bit-278316.firebaseio.com/",
 });
 const db = admin.firestore();
-
+const cors = require("cors")({ origin: true });
 exports.getRestaurants = functions.https.onRequest(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const original = req.query.text;
@@ -39,13 +39,13 @@ exports.getRestaurants = functions.https.onRequest(async (req, res) => {
         });
 });
 
-exports.getUserbyId = functions.https.onRequest(async (req, res) => {
+exports.getUserbyEmail = functions.https.onRequest(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    const userId = req.params[0].split("/")[1];
-    console.log("userId:", userId);
+    const userEmail = req.params[0].split("/")[1];
+    console.log("userId:", userEmail);
     const users = await db
         .collection("users")
-        .where("uid", "==", userId)
+        .where("email", "==", userEmail)
         .get()
         .then((snapshot) => {
             if (snapshot.empty) {
@@ -99,21 +99,21 @@ exports.modifyProfile = functions.https.onRequest(async (req, res) => {
 });
 
 exports.sendMailToRestaurant = functions.https.onRequest(async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    const request = req.body;
+    res.set("Access-Control-Allow-Origin", "*");
+    const request = JSON.parse(req.body);
+    console.log(request.name, request.interval);
     var message = {
         html: `Hello, partner! \n A reservation has been made from ${request.name} at your restaurant in the interval ${request.interval}. \n Our clients can't wait to be there! \n FoodTalk TEAM `,
         subject: `FoodTalk Reservation`,
         text: ``,
     };
-    var to = request.email;
+    var to = request.email[0];
     var data = {
         message: message,
         to: to,
     };
+    console.log("DATA", data);
     const mail = await db.collection("mail").add(data);
-
     res.json("ok");
     res.end();
-    return;
 });
