@@ -1,4 +1,7 @@
-
 <div class="container">
-<app-suggetions-tab *ngFor="let user of users" [user]="user"></app-suggetions-tab>
+  <h2>Suggested people</h2>
+  <app-suggetions-tab
+    *ngFor="let user of users"
+    [user]="user"
+  ></app-suggetions-tab>
 </div>

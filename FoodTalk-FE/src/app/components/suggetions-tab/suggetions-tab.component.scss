@@ -1,16 +1,30 @@
 @import "./../../../assets/mediaQueries.scss";
 
 .container {
-	margin-top: 2em;
-	padding: 2em;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	border: 1px solid gray;
-	@include respond-to("sm") {
-		border: none;
-	}
-	button {
-		float: right;
-	}
+  margin-top: 2em;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(245, 242, 233, 0.685);
+  button {
+    float: right;
+  }
+
+  .top {
+    display: flex;
+    flex-direction: row;
+	font-weight: bold;
+	font-size: large;
+    img {
+      width: 5em;
+      height: 5em;
+    }
+    p {
+      margin: 1em;
+    }
+  }
+  ul {
+    list-style-type: circle;
+  }
 }
