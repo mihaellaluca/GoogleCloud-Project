@@ -1,0 +1,53 @@
+@import "./../../../assets/mediaQueries.scss";
+
+.container {
+  margin-top: 2em;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid gray;
+  // @include respond-to("sm") {
+  //   border: none;
+  // }
+  button {
+    float: right;
+  }
+}
+.container-checkboxes{
+  margin-top: 2em;
+  padding: 2em;
+  margin: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid rgba(238, 166, 34, 0.925); ;
+  button {
+    float: right;
+  }
+}
+.profile-photo{
+  width:50%;
+  height:50%;
+
+}
+.photo-username{
+  display:flex;
+  flex-direction: row;
+align-items: center;
+
+}
+
+.favorites{
+  color: rgba(238, 166, 34, 0.925);
+}
+
+.name{
+  color: rgba(255, 158, 31, 0.925);
+}
+
+.existent-pref{
+  list-style-type: none;
+
+}
+

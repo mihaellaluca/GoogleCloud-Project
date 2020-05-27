@@ -1,25 +1,58 @@
-<div *ngIf="auth.user$ | async; then authenticated else guest">
-  <!-- template will replace this div -->
+
+<div class="container-checkboxes">
+  <div class="photo-username">
+    <img src="{{imgUrl}}" class="profile-photo">
+    <h4 class="name">{{userDisplayName}}</h4>
+  </div>
+
+  <h4 class="favorites">Favorite Food</h4>
+  <ul class="existent-pref">
+    <li *ngFor="let food of prefFood">
+      {{food}}
+    </li>
+  </ul>
+
+  <h4 class="favorites">Favorite Restaurants</h4>
+  <ul class="existent-pref">
+    <li *ngFor="let restaurant of prefRestaurants">
+      {{restaurant}}
+    </li>
+  </ul>
+
+  <h4 class="favorites">Favorite Cuisines</h4>
+  <ul class="existent-pref">
+    <li *ngFor="let specific of prefSpecific">
+      {{specific}}
+    </li>
+  </ul>
 </div>
 
-<!-- User NOT logged in -->
-<ng-template #guest>
-<h3>Howdy, GUEST</h3>
-<p>Login to get started...</p>
+<div class="container-checkboxes">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h4 class="favorites">Favorite Restaurants</h4>
+  <div *ngFor="let restaurant of restaurants; let i=index">
+    <label>
+      <input type="checkbox" [value]="restaurant" (change)="onCheckedRestaurant($event)" />
+      {{restaurant}}
+    </label>
+  </div>
 
-<button (click)="auth.googleSignin()">
-  <i class="fa fa-google"></i> Connect Google
-</button>
+  <h4 class="favorites">Favorite Cuisines</h4>
+  <div *ngFor="let cuisine of cuisines; let i=index">
+    <label>
+      <input type="checkbox" [value]="cuisine" (change)="onCheckedCuisine($event)" />
+      {{cuisine}}
+    </label>
+  </div>
 
-</ng-template>
+  <h4 class="favorites">Favorite Food</h4>
+  <div *ngFor="let  foodType of food; let i=index">
+    <label>
+      <input type="checkbox" [value]="foodType" (change)="onCheckedFood($event)" />
+      {{foodType}}
+    </label>
+  </div>
 
-
-<!-- User logged in -->
-<ng-template #authenticated>
-<div *ngIf="auth.user$ | async as user">
-  <h3>Howdy, {{ user.displayName }}</h3>
-  <img  [src]="user.photoURL">
-  <p>UID: {{ user.uid }}</p>
-  <button (click)="auth.signOut()">Logout</button>
+<button class="btn btn-success">Modify</button>
+</form>
 </div>
-</ng-template>
