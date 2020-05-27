@@ -10,7 +10,8 @@ import { BookingComponent } from './components/booking/booking.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapComponent } from './components/map/map.component';
-
+import { SuggetionsTabComponent } from './components/suggetions-tab/suggetions-tab.component';
+import { HomeComponent } from './components/home/home.component';
 
 import { AuthService } from './services/auth/auth.service'
 // ...omitted
@@ -38,7 +39,8 @@ const config = {apiKey: "AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw",
     HeaderComponent,
     BookingComponent,
     MapComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    SuggetionsTabComponent, HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -49,41 +51,13 @@ const config = {apiKey: "AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw",
     AngularFirestoreModule,
     AngularFireAuthModule,
     HttpClientModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
 
-=======
-import { SuggetionsTabComponent } from './components/suggetions-tab/suggetions-tab.component';
-import { HomeComponent } from './components/home/home.component';
 
-const config = {
-	apiKey: 'AIzaSyD4Gupl0obJnBa5K9HHDlhAglKkH2W25sw',
-	authDomain: 'astral-bit-278316.firebaseapp.com',
-	databaseURL: 'https://astral-bit-278316.firebaseio.com/',
-	projectId: 'astral-bit-278316',
-	storageBucket: 'astral-bit-278316.appspot.com',
-	messagingSenderId: '655163274876',
-	appId: '1:655163274876:web:f0558d95983c919225fbf9',
-	measurementId: 'G-XERHT73D69'
-};
 
-@NgModule({
-	declarations: [ AppComponent, HeaderComponent, BookingComponent, MapComponent, SuggetionsTabComponent, HomeComponent ],
-	imports: [
-		BrowserModule,
-		AppRoutingModule,
-		FormsModule,
-		ReactiveFormsModule,
-		AngularFireModule.initializeApp(config),
-		AngularFirestoreModule,
-		AngularFireAuthModule,
-		GoogleMapsModule,
-		HttpClientModule
-	],
-	providers: [ AuthService ],
-	bootstrap: [ AppComponent ]
->>>>>>> master
 })
 export class AppModule {}

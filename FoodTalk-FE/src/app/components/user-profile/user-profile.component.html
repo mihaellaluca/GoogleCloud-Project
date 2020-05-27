@@ -1,36 +1,58 @@
-<div class="container">
-  <li>
 
-  </li>
-  <ul>
-    <li *ngFor="let food of userProfile['prefFood']">
+<div class="container-checkboxes">
+  <div class="photo-username">
+    <img src="{{imgUrl}}" class="profile-photo">
+    <h4 class="name">{{userDisplayName}}</h4>
+  </div>
+
+  <h4 class="favorites">Favorite Food</h4>
+  <ul class="existent-pref">
+    <li *ngFor="let food of prefFood">
       {{food}}
     </li>
   </ul>
-<form (ngSubmit)="onSubmit()">
 
-  <h4>Favorite Restaurants</h4>
-  <div *ngFor="let restaurant of restaurants">
-    <input type="checkbox" id="{{restaurant}}" name="{{restaurant}}" >
-    <label for="{{restaurant}}">{{restaurant}}</label>
+  <h4 class="favorites">Favorite Restaurants</h4>
+  <ul class="existent-pref">
+    <li *ngFor="let restaurant of prefRestaurants">
+      {{restaurant}}
+    </li>
+  </ul>
+
+  <h4 class="favorites">Favorite Cuisines</h4>
+  <ul class="existent-pref">
+    <li *ngFor="let specific of prefSpecific">
+      {{specific}}
+    </li>
+  </ul>
+</div>
+
+<div class="container-checkboxes">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h4 class="favorites">Favorite Restaurants</h4>
+  <div *ngFor="let restaurant of restaurants; let i=index">
+    <label>
+      <input type="checkbox" [value]="restaurant" (change)="onCheckedRestaurant($event)" />
+      {{restaurant}}
+    </label>
   </div>
 
-<h4>Favorite Cuisines</h4>
-  <h4></h4>
-  <div *ngFor="let cuisine of cuisines">
-    <input type="checkbox" id="{{cuisine}}" name="{{cuisine}}">
-    <label for="{{cuisine}}">{{cuisine}}</label>
+  <h4 class="favorites">Favorite Cuisines</h4>
+  <div *ngFor="let cuisine of cuisines; let i=index">
+    <label>
+      <input type="checkbox" [value]="cuisine" (change)="onCheckedCuisine($event)" />
+      {{cuisine}}
+    </label>
   </div>
 
-  <h4>Food preferences</h4>
-  <div *ngFor="let  foodType of food">
-    <input type="checkbox" id="{{foodType}}" name="{{foodType}}" ng-click="addFood(restaurant)">
-    <label for="{{foodType}}">{{foodType}}</label>
-
+  <h4 class="favorites">Favorite Food</h4>
+  <div *ngFor="let  foodType of food; let i=index">
+    <label>
+      <input type="checkbox" [value]="foodType" (change)="onCheckedFood($event)" />
+      {{foodType}}
+    </label>
   </div>
 
-  <div class="form-group">
-    <button class="btn btn-success">Modify</button>
-  </div>
+<button class="btn btn-success">Modify</button>
 </form>
 </div>

@@ -1,46 +1,121 @@
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from './../../services/auth/auth.service';
-import { UserProfileService } from './../../services/user-profile/user-profile.service';
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { AuthService } from "./../../services/auth/auth.service";
+import { UserProfileService } from "./../../services/user-profile/user-profile.service";
+import { Component, OnInit } from "@angular/core";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormArray,
+  ReactiveFormsModule,
+  FormControl,
+} from "@angular/forms";
 
 @Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  selector: "app-user-profile",
+  templateUrl: "./user-profile.component.html",
+  styleUrls: ["./user-profile.component.scss"],
 })
 export class UserProfileComponent implements OnInit {
-  restaurants = ['Mamamia', 'Dionisios', 'Hellow'];
-  food = ['pizza', 'burger', 'salad'];
-  cuisines = ['Italy', 'Germany'];
-  chosenRestaurants = [];
-  chosenFood = [];
-  chosenCuisines = [];
-  userProfile;
+  restaurants = [];
+  food = ["pizza", "burger", "salad"];
+  cuisines = ["Italy", "Germany"];
 
-  constructor(private authService: AuthService, private httpClient: HttpClient) {
 
-    // authService.user$.pipe().subscribe((data)=>{
+  prefFood = [];
+  prefRestaurants = [];
+  prefSpecific = [];
+  userDisplayName;
+  imgUrl;
 
-    // httpClient.get("https://us-central1-astral-bit-278316.cloudfunctions.net/getUserbyEmail/"+data["email"])
-    //                               .pipe()
-    //                               .subscribe((data)=> {
-    //                                 console.log(data);
-    //                                 this.favoriteFoods = data['prefFood']});
+  form: FormGroup;
 
-    //    }
-    // );
+
+  constructor(
+    private authService: AuthService,
+    private httpClient: HttpClient,
+    private fb: FormBuilder
+  ) {
+    this.getRestaurants();
+    authService.user$.pipe().subscribe((data) => {
+      httpClient
+        .get(
+          "https://us-central1-astral-bit-278316.cloudfunctions.net/getUserbyEmail/" +
+            data["email"]
+        )
+        .pipe()
+        .subscribe((data) => {
+          console.log(data);
+          let userProfile = Object.keys(data).map((i) => data[i]);
+          this.prefFood = userProfile[0].prefFood;
+          this.prefRestaurants = userProfile[0].prefRestaurants;
+          this.prefSpecific = userProfile[0].prefSpecific;
+          this.userDisplayName = userProfile[0].displayName;
+          this.imgUrl = userProfile[0].photoURL
+          console.log(this.imgUrl);
+        });
+    });
+    this.form = this.fb.group({
+      checkedCuisines: this.fb.array([], [Validators.required]),
+      checkedRestaurants: this.fb.array([], [Validators.required]),
+      checkedFood: this.fb.array([], Validators.required)
+    })
+
+  }
+  onCheckedRestaurant(e){
+    const checkArray: FormArray = this.form.get('checkedRestaurants') as FormArray;
+   this.onCheckboxChange(e, checkArray);
+  }
+  onCheckedCuisine(e){
+    const checkArray: FormArray = this.form.get('checkedCuisines') as FormArray;
+    this.onCheckboxChange(e, checkArray);
+  }
+  onCheckedFood(e){
+    const checkArray: FormArray = this.form.get('checkedFood') as FormArray;
+    this.onCheckboxChange(e, checkArray);
+  }
+  onCheckboxChange(e, checkArray ){
+    // const checkArray: FormArray = this.form.get('checkArray') as FormArray;
+
+    if (e.target.checked) {
+      checkArray.push(new FormControl(e.target.value));
+    } else {
+      let i: number = 0;
+      checkArray.controls.forEach((item: FormControl) => {
+        if (item.value == e.target.value) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+
+  ngOnInit(): void {}
+  onSubmit() {
+    console.log(this.form.value);
+    this.authService.user$.pipe().subscribe((data) => {
+      let body = {
+        prefFood: this.form.value.checkedFood,
+        prefRestaurant: this.form.value.checkedRestaurants,
+        prefSpecific: this.form.value.checkedCuisines
+      }
+      console.log(body);
+      let jsonBody = JSON.stringify(body);
+      this.httpClient.post("https://us-central1-astral-bit-278316.cloudfunctions.net/modifyProfile/"+data["uid"], jsonBody).pipe()
+      .subscribe((data)=> console.log(data))
+    });
+
+  }
+  getRestaurants(){
+    this.httpClient.get("https://us-central1-astral-bit-278316.cloudfunctions.net/getRestaurants").pipe()
+    .subscribe((data)=> {
+      let parsedData = Object.keys(data).map((i) => data[i]);
+      parsedData.forEach((restaur)=> {console.log(restaur);this.restaurants.push(restaur["Name"]);})
+    });
 
   }
 
-  ngOnInit(): void {
 
-
-  }
-  onSubmit(){
-
-  }
-  addFood(chekedFood: string){
-    this.chosenFood.push(chekedFood);
-  }
 
 }
