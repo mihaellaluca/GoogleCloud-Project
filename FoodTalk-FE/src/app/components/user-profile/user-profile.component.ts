@@ -1,13 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from "./../../services/auth/auth.service";
-import { UserProfileService } from "./../../services/user-profile/user-profile.service";
 import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
   Validators,
   FormArray,
-  ReactiveFormsModule,
   FormControl,
 } from "@angular/forms";
 
@@ -18,8 +16,8 @@ import {
 })
 export class UserProfileComponent implements OnInit {
   restaurants = [];
-  food = ["pizza", "burger", "salad"];
-  cuisines = ["Italy", "Germany"];
+  food = ["Pizza", "Burger", "Salad", "Chicken Salad"];
+  cuisines = ["Asian", "Mediteanean","Italian", "Romanian"];
 
 
   prefFood = [];
@@ -37,24 +35,7 @@ export class UserProfileComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.getRestaurants();
-    authService.user$.pipe().subscribe((data) => {
-      httpClient
-        .get(
-          "https://us-central1-astral-bit-278316.cloudfunctions.net/getUserbyEmail/" +
-            data["email"]
-        )
-        .pipe()
-        .subscribe((data) => {
-          console.log(data);
-          let userProfile = Object.keys(data).map((i) => data[i]);
-          this.prefFood = userProfile[0].prefFood;
-          this.prefRestaurants = userProfile[0].prefRestaurants;
-          this.prefSpecific = userProfile[0].prefSpecific;
-          this.userDisplayName = userProfile[0].displayName;
-          this.imgUrl = userProfile[0].photoURL
-          console.log(this.imgUrl);
-        });
-    });
+    this.updateUserPreferences();
     this.form = this.fb.group({
       checkedCuisines: this.fb.array([], [Validators.required]),
       checkedRestaurants: this.fb.array([], [Validators.required]),
@@ -75,8 +56,6 @@ export class UserProfileComponent implements OnInit {
     this.onCheckboxChange(e, checkArray);
   }
   onCheckboxChange(e, checkArray ){
-    // const checkArray: FormArray = this.form.get('checkArray') as FormArray;
-
     if (e.target.checked) {
       checkArray.push(new FormControl(e.target.value));
     } else {
@@ -92,6 +71,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+
   onSubmit() {
     console.log(this.form.value);
     this.authService.user$.pipe().subscribe((data) => {
@@ -99,23 +80,46 @@ export class UserProfileComponent implements OnInit {
         prefFood: this.form.value.checkedFood,
         prefRestaurant: this.form.value.checkedRestaurants,
         prefSpecific: this.form.value.checkedCuisines
-      }
+      };
       console.log(body);
       let jsonBody = JSON.stringify(body);
       this.httpClient.post("https://us-central1-astral-bit-278316.cloudfunctions.net/modifyProfile/"+data["uid"], jsonBody).pipe()
       .subscribe((data)=> console.log(data))
     });
-
+    window.alert("Your was modified");
+    this.updateUserPreferences();
   }
+
+
+
+
   getRestaurants(){
     this.httpClient.get("https://us-central1-astral-bit-278316.cloudfunctions.net/getRestaurants").pipe()
     .subscribe((data)=> {
       let parsedData = Object.keys(data).map((i) => data[i]);
       parsedData.forEach((restaur)=> {console.log(restaur);this.restaurants.push(restaur["Name"]);})
     });
-
   }
 
-
+  updateUserPreferences(){
+    this.authService.user$.pipe().subscribe((data) => {
+      this.httpClient
+        .get(
+          "https://us-central1-astral-bit-278316.cloudfunctions.net/getUserbyEmail/" +
+            data["email"]
+        )
+        .pipe()
+        .subscribe((data) => {
+          console.log(data);
+          let userProfile = Object.keys(data).map((i) => data[i]);
+          this.prefFood = userProfile[0].prefFood;
+          this.prefRestaurants = userProfile[0].prefRestaurants;
+          this.prefSpecific = userProfile[0].prefSpecific;
+          this.userDisplayName = userProfile[0].displayName;
+          this.imgUrl = userProfile[0].photoURL
+          console.log(this.imgUrl);
+        });
+    });
+  }
 
 }
