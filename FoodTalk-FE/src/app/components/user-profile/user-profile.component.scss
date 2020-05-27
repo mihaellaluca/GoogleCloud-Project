@@ -14,40 +14,37 @@
     float: right;
   }
 }
-.container-checkboxes{
+.container-checkboxes {
   margin-top: 2em;
   padding: 2em;
   margin: 2em;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid rgba(238, 166, 34, 0.925); ;
+  border: 1px solid rgba(238, 166, 34, 0.925);
   button {
     float: right;
   }
 }
-.profile-photo{
-  width:50%;
-  height:50%;
-
+.profile-photo {
+  width: 4em;
+  height: 4em;
+  border-radius: 12%;
 }
-.photo-username{
-  display:flex;
+.photo-username {
+  display: flex;
   flex-direction: row;
-align-items: center;
-
+  align-items: center;
 }
 
-.favorites{
+.favorites {
   color: rgba(238, 166, 34, 0.925);
 }
 
-.name{
+.name {
   color: rgba(255, 158, 31, 0.925);
 }
 
-.existent-pref{
+.existent-pref {
   list-style-type: none;
-
 }
-
