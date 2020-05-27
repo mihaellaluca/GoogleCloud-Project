@@ -70,7 +70,8 @@ exports.getUserbyEmail = functions.https.onRequest(async (req, res) => {
 exports.modifyProfile = functions.https.onRequest(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const userId = req.params[0].split("/")[1];
-    const request = req.body;
+    const request = JSON.parse(req.body);
+    console.log("REQUEST", request, " ID:", userId);
     var prefRestaurant = request.prefRestaurant;
     var prefSpecific = request.prefSpecific;
     var prefFood = request.prefFood;
