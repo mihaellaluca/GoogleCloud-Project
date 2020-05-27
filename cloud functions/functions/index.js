@@ -104,10 +104,10 @@ exports.modifyProfile = functions.https.onRequest(async (req, res) => {
 exports.getNearestUsers = functions.https.onRequest(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const userId = req.params[0].split("/")[1];
+    let myCoo;
    
     const request = req.body;
-   
-    const users = await db
+        const users = await db
         .collection("users")
         .get()
         .then((snapshot) => {
@@ -115,15 +115,50 @@ exports.getNearestUsers = functions.https.onRequest(async (req, res) => {
                 console.log("No matching documents.");
                 return;
             }
-
-            var allUsers = [];
             snapshot.forEach((doc) => {
-                allUsers.push(doc);
-                // let iid = doc.id;
-                // let data = doc.data();
-                // allUsers[iid] = data;
+                let iid = doc.id;
+                let data = doc.data();
+                if (iid === userId){
+                    myCoo = data.center;
+                }
             });
 
+            var allUsers = {};
+            snapshot.forEach((doc) => {
+                let iid = doc.id;
+                let data = doc.data();
+                    if (data.center !== undefined) {
+                        console.log('mycoo',myCoo);
+                        let lat1 = data.center.lat;
+                        let lat2 = myCoo.lat;
+                        let lon1 = data.center.lng;
+                        let lon2 = myCoo.lng;
+
+                        console.log('coo',lat1, lat2,lon1, lon2);
+
+                        var radlat1 = Math.PI * lat1/180;
+                        var radlat2 = Math.PI * lat2/180;
+                        var theta = lon1-lon2;
+                        var radtheta = Math.PI * theta/180;
+                        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                        if (dist > 1) {
+                            dist = 1;
+                        }
+                        dist = Math.acos(dist);
+                        dist = dist * 180/Math.PI;
+                        dist = dist * 60 * 1.1515;
+                        dist = dist * 1.609344 
+                    
+                        console.log('distanta',dist);
+                        if ((dist < 10) && (iid !== userId)){
+                            allUsers[iid] = data;
+                        }
+                    
+                    }
+
+                
+            });
+            console.log('ceva',allUsers);
             res.json(allUsers);
             res.end();
             return;
