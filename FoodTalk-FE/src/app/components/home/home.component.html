@@ -1,4 +1,4 @@
 
 <div class="container">
-<app-suggetions-tab></app-suggetions-tab>
-<app-suggetions-tab></app-suggetions-tab></div>
+<app-suggetions-tab *ngFor="let user of users" [user]="user"></app-suggetions-tab>
+</div>
