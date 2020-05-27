@@ -25,8 +25,8 @@
         [ngClass]="{ 'is-invalid': submitted && f.restaurants.errors }"
         required
       >
-        <option *ngFor="let rest of availableRestaurants" [value]="rest.name">{{
-          rest.name
+        <option *ngFor="let rest of availableRestaurants" [value]="rest.Name">{{
+          rest.Name
         }}</option>
       </select>
       <div *ngIf="submitted && f.restaurants.errors" class="invalid-feedback">

@@ -5,6 +5,8 @@ import {
   Validators,
   ReactiveFormsModule,
 } from "@angular/forms";
+import { RestaurantsService } from "src/app/services/restaurants.service";
+import { MailsService } from "src/app/services/mails.service";
 
 @Component({
   selector: "app-booking",
@@ -15,13 +17,14 @@ export class BookingComponent implements OnInit {
   bookForm: FormGroup;
   loading = false;
   submitted = false;
-  availableRestaurants = [
-    { id: "123", name: "Oscar" },
-    { id: "234", name: "Felix" },
-  ];
-  availableIntervals = ["10-12", "12-14"];
+  availableRestaurants = [];
+  availableIntervals = [];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private restaurantService: RestaurantsService,
+    private mailService: MailsService
+  ) {}
 
   ngOnInit() {
     this.bookForm = this.formBuilder.group({
@@ -29,6 +32,23 @@ export class BookingComponent implements OnInit {
       restaurants: [""],
       intervals: [""],
     });
+
+    this.restaurantService
+      .getRestaurants()
+      .pipe()
+      .subscribe((data) => {
+        var restaurants = Object.keys(data).map((i) => data[i]);
+        restaurants.forEach((rest) => {
+          this.availableRestaurants.push(rest);
+          for (let i = 0; i < rest.Avail.length; i++) {
+            let interv = rest.Avail[i].Interval;
+            let counter = rest.Avail[i].NumberAvailableSeats;
+            if (counter > 0) {
+              this.availableIntervals.push(interv);
+            }
+          }
+        });
+      });
   }
 
   get f() {
@@ -44,8 +64,35 @@ export class BookingComponent implements OnInit {
     let name = this.f.name.value;
     let rest = this.f.restaurants.value;
     let interval = this.f.intervals.value;
-    console.log(this.bookForm, name, rest, interval);
-    window.alert("Succesfully booked a table!");
     this.bookForm.reset();
+
+    let restEmail = this.searchRestaurantEmail(this.availableRestaurants, rest);
+    let array =[];
+    array.push(restEmail);
+    let body = {
+      name: name,
+      interval: interval,
+      email: array
+    };
+   
+    console.log("BODY", body);
+    let response = this.mailService
+      .sendMailToRestaurant(body)
+      .pipe()
+      .subscribe((data) => console.log(data));
+  
+    console.log("Succesfully booked a table!");
+  }
+
+  searchRestaurantEmail(availableRestaurants, restName) {
+    console.log("avail rest", availableRestaurants);
+    console.log(restName);
+    for (let i = 0; i < availableRestaurants.length; i++) {
+      console.log(availableRestaurants[i]);
+      if (availableRestaurants[i].Name === restName) {
+        console.log("Am gasit asta:",availableRestaurants[i].email);
+        return availableRestaurants[i].email;
+      }
+    }
   }
 }
