@@ -67,6 +67,8 @@ exports.getUserbyEmail = functions.https.onRequest(async (req, res) => {
         });
 });
 
+
+
 exports.modifyProfile = functions.https.onRequest(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const userId = req.params[0].split("/")[1];
@@ -98,6 +100,41 @@ exports.modifyProfile = functions.https.onRequest(async (req, res) => {
             console.log("Error getting documents", err);
         });
 });
+
+
+exports.getNearestUsers = functions.https.onRequest(async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const userId = req.params[0].split("/")[1];
+   
+    const request = req.body;
+   
+    const users = await db
+        .collection("users")
+        .get()
+        .then((snapshot) => {
+            if (snapshot.empty) {
+                console.log("No matching documents.");
+                return;
+            }
+
+            var allUsers = [];
+            snapshot.forEach((doc) => {
+                allUsers.push(doc);
+                // let iid = doc.id;
+                // let data = doc.data();
+                // allUsers[iid] = data;
+            });
+
+            res.json(allUsers);
+            res.end();
+            return;
+        })
+        .catch((err) => {
+            console.log("Error getting documents", err);
+        });
+});
+
+
 
 exports.sendMailToRestaurant = functions.https.onRequest(async (req, res) => {
     res.set("Access-Control-Allow-Origin", "*");
