@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-suggetions-tab',
-  templateUrl: './suggetions-tab.component.html',
-  styleUrls: ['./suggetions-tab.component.scss']
+	selector: 'app-suggetions-tab',
+	templateUrl: './suggetions-tab.component.html',
+	styleUrls: [ './suggetions-tab.component.scss' ]
 })
 export class SuggetionsTabComponent implements OnInit {
+	@Input() user;
+	constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+	ngOnInit(): void {
+		console.log(this.user);
+	}
 }

@@ -1,9 +1,11 @@
 <div class="container">
     
-    <img src="" alt="poza">
-    <p>Nume</p>
-    <div><p>Restaurante Preferate</p> <ul><li>1</li><li>2</li><li>3</li></ul>
-        <p>Mancare Preferata</p> <ul><li>1</li><li>2</li><li>3</li></ul>
+    <img src="{{user.photoUrl}}" alt="poza" height="200" width="200">
+    <p>{{user.displayName}}</p>
+    <p>email: {{user.email}}</p>
+    <div><p>Restaurante Preferate</p> <ul><li *ngFor="let restaurant of user.prefRestaurants">{{restaurant}}</li></ul>
+        <p>Mancare Preferata</p> <ul><li *ngFor="let food of user.prefFood">{{food}}</li></ul>
+        <p>Specifice preferate</p> <ul><li *ngFor="let specific of user.prefSpecific">{{specific}}</li></ul>
     </div>
     <button class="btn btn-lg btn-primary">Invite</button>
 </div>
